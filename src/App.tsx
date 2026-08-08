@@ -1,15 +1,14 @@
 
 
 import './App.css'
-import {Button} from "./components/ui/button"
+import FuturisticAuthHome from './components/home/FuturisticAuthHome'
 
 function App() {
   
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">Hello Auth Frontend</h1>
-      <Button>Click me</Button>
+     <FuturisticAuthHome/>
     </div>
   )
 }
