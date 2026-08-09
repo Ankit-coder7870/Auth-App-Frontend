@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -7,6 +6,7 @@ import {
 } from "lucide-react";
 
 import { FaGithub, FaGoogle } from "react-icons/fa";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,98 +14,68 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
+
 function Login() {
- return (
-    <div className="relative min-h-screen overflow-hidden bg-[#070707] text-white">
-
-      {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0">
-
-        <motion.div
-          className="absolute left-[15%] top-[10%] h-[350px] w-[350px] rounded-full bg-violet-600/10 blur-[140px]"
-          animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.4, 0.7, 0.4],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+  return (
+    <main className="h-[calc(100dvh-64px)] min-h-0 overflow-hidden bg-black">
+      {/* Main login area */}
+      <div className="flex h-full w-full items-center justify-center px-4">
 
         <motion.div
-          className="absolute bottom-[5%] right-[10%] h-[300px] w-[300px] rounded-full bg-blue-600/10 blur-[130px]"
-          animate={{
-            scale: [1.1, 1, 1.1],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-
-        {/* Subtle grid */}
-        <div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage: `
-              linear-gradient(
-                rgba(255,255,255,0.5) 1px,
-                transparent 1px
-              ),
-              linear-gradient(
-                90deg,
-                rgba(255,255,255,0.5) 1px,
-                transparent 1px
-              )
-            `,
-            backgroundSize: "45px 45px",
-          }}
-        />
-      </div>
-
-      {/* Main */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10">
-
-        <motion.div
-          initial={{ opacity: 0, y: 25, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{
-            duration: 0.6,
-            ease: "easeOut",
-          }}
-          className="w-full max-w-[430px]"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="w-full max-w-[450px]"
         >
-
           <Card
             className="
-              overflow-hidden
-              rounded-3xl
-              border-white/[0.08]
-              bg-white/[0.035]
+              w-full
+              rounded-xl
+              border border-white/15
+              bg-[#101010]
               shadow-2xl
               shadow-black/50
-              backdrop-blur-2xl
             "
           >
-
-            <CardContent className="p-8 sm:p-10">
+            <CardContent
+              className="
+                px-7
+                py-6
+                sm:px-8
+                sm:py-7
+              "
+            >
 
               {/* Heading */}
               <motion.div
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="mb-8"
+                transition={{ delay: 0.1 }}
+                className="mb-6 text-center"
               >
-                <h1 className="text-3xl font-semibold tracking-tight">
+                <h1
+                  className="
+                    text-[30px]
+                    font-bold
+                    leading-tight
+                    tracking-tight
+                    text-white
+                    sm:text-[32px]
+                  "
+                >
                   Welcome back
                 </h1>
 
-                <p className="mt-2 text-sm leading-6 text-zinc-400">
+                <p
+                  className="
+                    mx-auto
+                    mt-2
+                    max-w-[330px]
+                    text-sm
+                    leading-5
+                    text-slate-400
+                  "
+                >
                   Enter your credentials to access your account
                 </p>
               </motion.div>
@@ -114,15 +84,15 @@ function Login() {
               <motion.form
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.25 }}
-                className="space-y-5"
+                transition={{ delay: 0.2 }}
+                className="space-y-4"
               >
 
-                {/* Email */}
+                {/* EMAIL */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-sm text-zinc-300"
+                    className="text-sm font-medium text-slate-200"
                   >
                     Email
                   </Label>
@@ -133,10 +103,10 @@ function Login() {
                         absolute
                         left-3
                         top-1/2
-                        h-4
-                        w-4
+                        h-[18px]
+                        w-[18px]
                         -translate-y-1/2
-                        text-zinc-500
+                        text-slate-400
                       "
                     />
 
@@ -147,25 +117,29 @@ function Login() {
                       placeholder="you@example.com"
                       required
                       className="
-                        h-11
-                        border-white/[0.08]
-                        bg-black/20
+                        h-10
+                        rounded-lg
+                        border border-white/15
+                        bg-[#1a1a1a]
                         pl-10
+                        text-sm
                         text-white
-                        placeholder:text-zinc-600
-                        focus-visible:border-violet-500/50
-                        focus-visible:ring-violet-500/20
+                        placeholder:text-slate-500
+                        shadow-none
+                        focus-visible:border-white/40
+                        focus-visible:ring-1
+                        focus-visible:ring-white/20
                       "
                     />
                   </div>
                 </div>
 
-                {/* Password */}
+                {/* PASSWORD */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="password"
-                      className="text-sm text-zinc-300"
+                      className="text-sm font-medium text-slate-200"
                     >
                       Password
                     </Label>
@@ -174,9 +148,9 @@ function Login() {
                       type="button"
                       className="
                         text-xs
-                        text-zinc-500
+                        text-slate-500
                         transition-colors
-                        hover:text-violet-400
+                        hover:text-white
                       "
                     >
                       Forgot password?
@@ -189,10 +163,10 @@ function Login() {
                         absolute
                         left-3
                         top-1/2
-                        h-4
-                        w-4
+                        h-[18px]
+                        w-[18px]
                         -translate-y-1/2
-                        text-zinc-500
+                        text-slate-400
                       "
                     />
 
@@ -203,49 +177,42 @@ function Login() {
                       placeholder="••••••••"
                       required
                       className="
-                        h-11
-                        border-white/[0.08]
-                        bg-black/20
+                        h-10
+                        rounded-lg
+                        border border-white/15
+                        bg-[#1a1a1a]
                         pl-10
-                        pr-10
+                        text-sm
                         text-white
-                        placeholder:text-zinc-600
-                        focus-visible:border-violet-500/50
-                        focus-visible:ring-violet-500/20
+                        placeholder:text-slate-500
+                        shadow-none
+                        focus-visible:border-white/40
+                        focus-visible:ring-1
+                        focus-visible:ring-white/20
                       "
                     />
-
-                    <motion.button
-                      type="button"
-                      whileTap={{ scale: 0.85 }}
-                      className="
-                        absolute
-                        right-3
-                        top-1/2
-                        -translate-y-1/2
-                        text-zinc-500
-                        hover:text-zinc-200
-                      "
-                    >
-                      
-                    </motion.button>
                   </div>
                 </div>
 
-                {/* Login button */}
+                {/* LOGIN BUTTON */}
                 <motion.div
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.005 }}
+                  whileTap={{ scale: 0.985 }}
+                  className="pt-1"
                 >
                   <Button
                     type="submit"
                     className="
-                      h-11
+                      h-10
                       w-full
+                      rounded-full
+                      border-0
                       bg-white
+                      text-sm
                       font-medium
                       text-black
-                      hover:bg-zinc-200
+                      shadow-none
+                      hover:bg-slate-200
                     "
                   >
                     Sign in
@@ -253,94 +220,79 @@ function Login() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </motion.div>
-
               </motion.form>
 
-              {/* Divider */}
-              <div className="my-7 flex items-center gap-4">
-                <div className="h-px flex-1 bg-white/[0.08]" />
+              {/* DIVIDER */}
+              <div className="my-5 flex items-center gap-3">
+                <div className="h-px flex-1 bg-white/10" />
 
-                <span className="text-[11px] uppercase tracking-wider text-zinc-600">
-                  Or continue with
+                <span className="text-xs font-medium text-slate-500">
+                  OR
                 </span>
 
-                <div className="h-px flex-1 bg-white/[0.08]" />
+                <div className="h-px flex-1 bg-white/10" />
               </div>
 
-              {/* Social buttons */}
-              <div className="grid grid-cols-2 gap-3">
-
-                {/* Google */}
-                <motion.div
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="
-                      h-11
-                      w-full
-                      border-white/[0.08]
-                      bg-white/[0.02]
-                      text-zinc-300
-                      hover:bg-white/[0.06]
-                      hover:text-white
-                    "
-                  >
-                    <FaGoogle className="mr-2 h-4 w-4" />
-                    Google
-                  </Button>
-                </motion.div>
-
-                {/* GitHub */}
-                <motion.div
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="
-                      h-11
-                      w-full
-                      border-white/[0.08]
-                      bg-white/[0.02]
-                      text-zinc-300
-                      hover:bg-white/[0.06]
-                      hover:text-white
-                    "
-                  >
-                    <FaGithub className="mr-2 h-4 w-4" />
-                    GitHub
-                  </Button>
-                </motion.div>
-
-              </div>
-
-              {/* Sign up */}
-              <p className="mt-8 text-center text-sm text-zinc-500">
-                Don't have an account?{" "}
-                <button
+              {/* GOOGLE */}
+              <motion.div
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.99 }}
+              >
+                <Button
                   type="button"
-                  className="text-zinc-200 transition hover:text-violet-400"
+                  variant="outline"
+                  className="
+                    h-10
+                    w-full
+                    rounded-full
+                    border border-white/15
+                    bg-[#1a1a1a]
+                    text-sm
+                    font-medium
+                    text-white
+                    hover:bg-[#222222]
+                    hover:text-white
+                  "
                 >
-                  Create account
-                </button>
-              </p>
+                  <FaGoogle className="mr-2 h-4 w-4" />
+                  Continue with Google
+                </Button>
+              </motion.div>
+
+              {/* GITHUB */}
+              <motion.div
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.99 }}
+                className="mt-3"
+              >
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="
+                    h-10
+                    w-full
+                    rounded-full
+                    border border-white/15
+                    bg-[#1a1a1a]
+                    text-sm
+                    font-medium
+                    text-white
+                    hover:bg-[#222222]
+                    hover:text-white
+                  "
+                >
+                  <FaGithub className="mr-2 h-4 w-4" />
+                  Continue with GitHub
+                </Button>
+              </motion.div>
 
             </CardContent>
           </Card>
-
-          {/* Security text */}
-          <p className="mt-5 text-center text-xs text-zinc-700">
-            Your connection is encrypted and secure
-          </p>
-
         </motion.div>
+
       </div>
-    </div>
+    </main>
   );
 }
 
-export default Login
+export default Login;
