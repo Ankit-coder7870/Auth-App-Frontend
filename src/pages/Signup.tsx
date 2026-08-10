@@ -5,8 +5,64 @@ import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import type RegisterData from "@/models/RegisterData";
+import { registerUser } from "@/services/AuthService";
 
 function Signup() {
+  const [data, setData] = useState<RegisterData>({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState(null);
+
+//handling form changes
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setData((value) => ({
+    ...value,
+    [e.target.name]: e.target.value,
+  }));
+  
+  
+}
+
+//handling form submission
+const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  
+  if(data.name.trim() === ""){
+    toast.error("Name is required");
+    return;
+  }
+
+  if(data.email.trim() === ""){
+    toast.error("Email is required");
+    return;
+  }
+
+  if(data.password.trim() === ""){
+    toast.error("Password is required");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const response = await registerUser(data);
+    console.log(response);
+    toast.success("User registered successfully");
+  } catch (error) {
+    console.error("Error registering user:", error);
+    toast.error("Failed to register user");
+  } finally {
+    setLoading(false);
+  }
+
+}
+
   return (
     <main className="h-[calc(100dvh-64px)] overflow-hidden bg-black">
       <div className="flex h-full w-full items-center justify-center px-4">
@@ -56,7 +112,7 @@ function Signup() {
 
             {/* CONTENT */}
             <CardContent className="px-7 pb-5">
-              <form className="space-y-3">
+              <form onSubmit={handleFormSubmit} className="space-y-3">
 
                 {/* NAME */}
                 <div className="space-y-1.5">
@@ -79,10 +135,12 @@ function Signup() {
 
                     <Input
                       id="name"
-                      name="name"
                       type="text"
                       placeholder="John"
                       required
+                      name="name"
+                      value={data.name}
+                      onChange={handleInputChange}
                       className="
                         h-10
                         rounded-lg
@@ -122,8 +180,10 @@ function Signup() {
 
                     <Input
                       id="email"
-                      name="email"
                       type="email"
+                      name="email"
+                      value={data.email}
+                      onChange={handleInputChange}
                       placeholder="you@example.com"
                       required
                       className="
@@ -166,6 +226,8 @@ function Signup() {
                     <Input
                       id="password"
                       name="password"
+                      value={data.password}
+                      onChange={handleInputChange}
                       type="password"
                       placeholder="••••••••"
                       required
