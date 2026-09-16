@@ -14,8 +14,62 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { loginUser } from "@/services/AuthService";
+import type { LoginData } from "@/models/LoginData";
+import { useNavigate } from "react-router";
 
 function Login() {
+
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: "",
+    password: ""
+  });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+//handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value
+    });
+    
+  };
+
+//handle form submission
+  const handleSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+    
+    // Validate input fields
+    if(loginData.email.trim() === "") {
+      toast.error("email is required !");
+      return;
+    }
+
+    if(loginData.password.trim() === "") {
+      toast.error("Password is required !");
+      return;
+    }
+    
+ // calling the loginUser function from AuthService.ts
+    try{
+      const userInfo = await loginUser(loginData);
+      toast.success("Login successful");
+      console.log(userInfo);
+      setLoginData({
+        email : "",
+        password : ""
+      });
+      navigate("/dashboard");
+    }catch(error){
+      toast.error("Invalid credentials");
+    }
+  };
+
   return (
     <main className="h-[calc(100dvh-64px)] min-h-0 overflow-hidden bg-black">
       {/* Main login area */}
@@ -81,7 +135,8 @@ function Login() {
               </motion.div>
 
               {/* Form */}
-              <motion.form
+              <motion.form 
+              onSubmit={handleSubmit} 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -113,6 +168,8 @@ function Login() {
                     <Input
                       id="email"
                       name="email"
+                      value={loginData.email}
+                      onChange={handleInputChange}
                       type="email"
                       placeholder="you@example.com"
                       required
@@ -173,6 +230,8 @@ function Login() {
                     <Input
                       id="password"
                       name="password"
+                      value={loginData.password}
+                      onChange={handleInputChange}
                       type="password"
                       placeholder="••••••••"
                       required
@@ -202,6 +261,7 @@ function Login() {
                 >
                   <Button
                     type="submit"
+                   
                     className="
                       h-10
                       w-full

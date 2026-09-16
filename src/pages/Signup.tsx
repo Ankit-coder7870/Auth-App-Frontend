@@ -9,6 +9,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import type RegisterData from "@/models/RegisterData";
 import { registerUser } from "@/services/AuthService";
+import { useNavigate } from "react-router";
 
 function Signup() {
   const [data, setData] = useState<RegisterData>({
@@ -19,9 +20,11 @@ function Signup() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
 //handling form changes
 const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  console.log(e.target.name, e.target.value);
   setData((value) => ({
     ...value,
     [e.target.name]: e.target.value,
@@ -49,11 +52,19 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     return;
   }
 
+  //calling the registerUser function from AuthService.ts
   try {
     setLoading(true);
     const response = await registerUser(data);
     console.log(response);
     toast.success("User registered successfully");
+    setData({
+        name: "",
+    email: "",
+    password: ""
+    });
+    navigate("/login");
+
   } catch (error) {
     console.error("Error registering user:", error);
     toast.error("Failed to register user");
@@ -105,11 +116,10 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 "
               >
                 Join the next-generation authentication
-                <br />
                 platform
               </CardDescription>
             </CardHeader>
-
+            
             {/* CONTENT */}
             <CardContent className="px-7 pb-5">
               <form onSubmit={handleFormSubmit} className="space-y-3">
