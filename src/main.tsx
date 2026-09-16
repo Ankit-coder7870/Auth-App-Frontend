@@ -15,11 +15,11 @@ createRoot(document.getElementById('root')!).render(
     <Route path='/' element = {<RootLayout/>}>
       <Route index element = {<App/>}/>
       <Route path='/login' element = {<Login/>}/>  
-       <Route path='/signup' element = {<Signup/>}/>
+      <Route path='/signup' element = {<Signup/>}/>
       <Route path='/service' element = {<Service/>}/>
       <Route path='/about' element = {<About/>}/>
-      <Route path='/dashboard' element = {<UserLayout/>}>
-      </Route>  
+      <Route path='/dashboard' element = {<UserLayout/>}/>
+    </Route>
   </Routes>
   </BrowserRouter>
   ,

@@ -3,6 +3,7 @@ import {
   Mail,
   Lock,
   ArrowRight,
+  CheckCircle2Icon,
 } from "lucide-react";
 
 import { FaGithub, FaGoogle } from "react-icons/fa";
@@ -19,6 +20,7 @@ import toast from "react-hot-toast";
 import { loginUser } from "@/services/AuthService";
 import type { LoginData } from "@/models/LoginData";
 import { useNavigate } from "react-router";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 function Login() {
 
@@ -28,7 +30,7 @@ function Login() {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>();
   const navigate = useNavigate();
 
 //handle input change
@@ -66,7 +68,7 @@ function Login() {
       });
       navigate("/dashboard");
     }catch(error){
-      toast.error("Invalid credentials");
+      setError(error);
     }
   };
 
@@ -130,9 +132,20 @@ function Login() {
                     text-slate-400
                   "
                 >
-                  Enter your credentials to access your account
+                  Enter your credentials to access account
                 </p>
               </motion.div>
+
+               {/* error */}
+               {error && (
+                <div className="text-red-500 text-sm">
+                  <Alert variant  = "destructive" className="mb-4">
+               
+                    <CheckCircle2Icon/>
+                    <AlertTitle> {error?.response?.data?.message}</AlertTitle>
+                  </Alert>
+                </div>
+               )}
 
               {/* Form */}
               <motion.form 
