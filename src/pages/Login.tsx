@@ -1,82 +1,77 @@
 import { motion } from "framer-motion";
-import {
-  Mail,
-  Lock,
-  ArrowRight,
-  CheckCircle2Icon,
-} from "lucide-react";
+import { Mail, Lock, ArrowRight, CheckCircle2Icon } from "lucide-react";
 
 import { FaGithub, FaGoogle } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { loginUser } from "@/services/AuthService";
 import type { LoginData } from "@/models/LoginData";
 import { useNavigate } from "react-router";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Spinner } from "@/components/ui/spinner";
 
 function Login() {
-
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
-    password: ""
+    password: "",
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>();
   const navigate = useNavigate();
 
-//handle input change
+  //handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({
       ...loginData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    
   };
 
-//handle form submission
+  //handle form submission
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    
+
     // Validate input fields
-    if(loginData.email.trim() === "") {
+    if (loginData.email.trim() === "") {
       toast.error("email is required !");
       return;
     }
 
-    if(loginData.password.trim() === "") {
+    if (loginData.password.trim() === "") {
       toast.error("Password is required !");
       return;
     }
-    
- // calling the loginUser function from AuthService.ts
-    try{
+
+    // calling the loginUser function from AuthService.ts
+    try {
       const userInfo = await loginUser(loginData);
       toast.success("Login successful");
       console.log(userInfo);
       setLoginData({
-        email : "",
-        password : ""
+        email: "",
+        password: "",
       });
       navigate("/dashboard");
-    }catch(error){
-      setError(error);
+    } catch (error: any) {
+      if (error?.status === 400) {
+        setError(error);
+      } else {
+        setError(error);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
-
   return (
     <main className="h-[calc(100dvh-64px)] min-h-0 overflow-hidden bg-black">
       {/* Main login area */}
       <div className="flex h-full w-full items-center justify-center px-4">
-
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,7 +96,6 @@ function Login() {
                 sm:py-7
               "
             >
-
               {/* Heading */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -136,26 +130,29 @@ function Login() {
                 </p>
               </motion.div>
 
-               {/* error */}
-               {error && (
+              {/* error */}
+              {error && (
                 <div className="text-red-500 text-sm">
-                  <Alert variant  = "destructive" className="mb-4">
-               
-                    <CheckCircle2Icon/>
-                    <AlertTitle> {error?.response?.data?.message}</AlertTitle>
+                  <Alert variant="destructive" className="mb-4">
+                    <CheckCircle2Icon />
+                    <AlertTitle>
+                      {" "}
+                      {error?.response
+                        ? error?.response?.data?.message
+                        : error?.message}
+                    </AlertTitle>
                   </Alert>
                 </div>
-               )}
+              )}
 
               {/* Form */}
-              <motion.form 
-              onSubmit={handleSubmit} 
+              <motion.form
+                onSubmit={handleSubmit}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
                 className="space-y-4"
               >
-
                 {/* EMAIL */}
                 <div className="space-y-2">
                   <Label
@@ -273,8 +270,8 @@ function Login() {
                   className="pt-1"
                 >
                   <Button
+                    disabled={isLoading}
                     type="submit"
-                   
                     className="
                       h-10
                       w-full
@@ -288,7 +285,13 @@ function Login() {
                       hover:bg-slate-200
                     "
                   >
-                    Sign in
+                    {isLoading ? (
+                      <>
+                        <Spinner /> please wait...
+                      </>
+                    ) : (
+                      "Login"
+                    )}
 
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -299,18 +302,13 @@ function Login() {
               <div className="my-5 flex items-center gap-3">
                 <div className="h-px flex-1 bg-white/10" />
 
-                <span className="text-xs font-medium text-slate-500">
-                  OR
-                </span>
+                <span className="text-xs font-medium text-slate-500">OR</span>
 
                 <div className="h-px flex-1 bg-white/10" />
               </div>
 
               {/* GOOGLE */}
-              <motion.div
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.99 }}
-              >
+              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
                 <Button
                   type="button"
                   variant="outline"
@@ -358,11 +356,9 @@ function Login() {
                   Continue with GitHub
                 </Button>
               </motion.div>
-
             </CardContent>
           </Card>
         </motion.div>
-
       </div>
     </main>
   );
