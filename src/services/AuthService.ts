@@ -15,5 +15,6 @@ export const loginUser = async (loginData:LoginData) => {
     const response = await apiClient.post("/auth/login", loginData);
     return response.data;
 }
+
     
 

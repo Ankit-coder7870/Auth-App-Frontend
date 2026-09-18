@@ -14,6 +14,7 @@ import type { LoginData } from "@/models/LoginData";
 import { useNavigate } from "react-router";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
+import useAuthStore from "@/store/authStore";
 
 function Login() {
   const [loginData, setLoginData] = useState<LoginData>({
@@ -24,6 +25,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>();
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
 
   //handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +52,9 @@ function Login() {
 
     // calling the loginUser function from AuthService.ts
     try {
-      const userInfo = await loginUser(loginData);
+      setIsLoading(true);
+      //const userInfo = await loginUser(loginData);
+      const userInfo = await login(loginData);
       toast.success("Login successful");
       console.log(userInfo);
       setLoginData({

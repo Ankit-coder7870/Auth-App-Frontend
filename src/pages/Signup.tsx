@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
 import { User, Mail, Lock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,69 +16,67 @@ import toast from "react-hot-toast";
 import type RegisterData from "@/models/RegisterData";
 import { registerUser } from "@/services/AuthService";
 import { useNavigate } from "react-router";
+import { Spinner } from "@/components/ui/spinner";
 
 function Signup() {
   const [data, setData] = useState<RegisterData>({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>(null);
   const navigate = useNavigate();
 
-//handling form changes
-const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  console.log(e.target.name, e.target.value);
-  setData((value) => ({
-    ...value,
-    [e.target.name]: e.target.value,
-  }));
-  
-  
-}
+  //handling form changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //console.log(e.target.name, e.target.value);
+    setData((value) => ({
+      ...value,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-//handling form submission
-const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  
-  if(data.name.trim() === ""){
-    toast.error("Name is required");
-    return;
-  }
+  //handling form submission
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  if(data.email.trim() === ""){
-    toast.error("Email is required");
-    return;
-  }
+    if (data.name.trim() === "") {
+      toast.error("Name is required");
+      return;
+    }
 
-  if(data.password.trim() === ""){
-    toast.error("Password is required");
-    return;
-  }
+    if (data.email.trim() === "") {
+      toast.error("Email is required");
+      return;
+    }
 
-  //calling the registerUser function from AuthService.ts
-  try {
-    setLoading(true);
-    const response = await registerUser(data);
-    console.log(response);
-    toast.success("User registered successfully");
-    setData({
+    if (data.password.trim() === "") {
+      toast.error("Password is required");
+      return;
+    }
+
+    //calling the registerUser function from AuthService.ts
+    try {
+      setLoading(true);
+      const response = await registerUser(data);
+      // console.log(response);
+      toast.success("User registered successfully");
+      setData({
         name: "",
-    email: "",
-    password: ""
-    });
-    navigate("/login");
-
-  } catch (error) {
-    console.error("Error registering user:", error);
-    toast.error("Failed to register user");
-  } finally {
-    setLoading(false);
-  }
-
-}
+        email: "",
+        password: "",
+      });
+      navigate("/login");
+    } catch (error) {
+      //console.error("Error registering user:", error);
+      setError(error);
+      toast.error("Failed to register user");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="h-[calc(100dvh-64px)] overflow-hidden bg-black">
@@ -115,15 +119,13 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   text-slate-400
                 "
               >
-                Join the next-generation authentication
-                platform
+                Join the next-generation authentication platform
               </CardDescription>
             </CardHeader>
-            
+
             {/* CONTENT */}
             <CardContent className="px-7 pb-5">
               <form onSubmit={handleFormSubmit} className="space-y-3">
-
                 {/* NAME */}
                 <div className="space-y-1.5">
                   <Label
@@ -266,6 +268,7 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   className="pt-1"
                 >
                   <Button
+                  disabled={loading}
                     type="submit"
                     className="
                       h-10
@@ -278,7 +281,13 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                       hover:bg-slate-200
                     "
                   >
-                    Sign Up
+                    {loading ? (
+                      <>
+                        <Spinner /> please wait...
+                      </>
+                    ) : (
+                      "Sign Up"
+                    )}
                   </Button>
                 </motion.div>
               </form>
@@ -287,18 +296,13 @@ const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               <div className="my-4 flex items-center gap-3">
                 <div className="h-px flex-1 bg-white/10" />
 
-                <span className="text-xs font-medium text-slate-500">
-                  OR
-                </span>
+                <span className="text-xs font-medium text-slate-500">OR</span>
 
                 <div className="h-px flex-1 bg-white/10" />
               </div>
 
               {/* GOOGLE */}
-              <motion.div
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.99 }}
-              >
+              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
                 <Button
                   type="button"
                   variant="outline"
