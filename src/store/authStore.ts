@@ -1,7 +1,7 @@
 import type LoginData from "@/models/LoginData";
 import type LoginResponseData from "@/models/LoginResponseData";
 import type User from "@/models/User";
-import { loginUser } from "@/services/AuthService";
+import { loginUser, logoutUser } from "@/services/AuthService";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -13,7 +13,7 @@ type AuthState = {
   authStatus: boolean;
   authLoading: boolean;
   login: (loginData: LoginData) => Promise<LoginResponseData>;
-  //logout: (silent?: boolean) => void;
+  logout: () => void;
   checkLogin: () => boolean | undefined;
   changeLocalLoginData: (
     accessToken: string,
@@ -53,22 +53,22 @@ const useAuthStore = create<AuthState>()(
         }
       },
 
-    //   logout: (silent = false) => {
-    //     try {
-    //       set({ authLoading: true });
-    //      // await logoutUser();
-    //     } catch (error) {
-    //       console.error("Logout failed:", error);
-    //     } finally {
-    //       set({ authLoading: false });
-    //     }
-    //     set({
-    //       accessToken: null,
-    //       user: null,
-    //       authStatus: false,
-    //       authLoading: false,
-    //     });
-    //   },
+      logout: async() => {
+        try {
+          set({ authLoading: true });
+          await logoutUser();
+        } catch (error) {
+          console.error("Logout failed:", error);
+        } finally {
+          set({ authLoading: false });
+        }
+        set({
+          accessToken: null,
+          user: null,
+          authStatus: false,
+          authLoading: false,
+        });
+      },
       checkLogin: () => {
         if (get().accessToken && get().authStatus) return true;
         else return false;

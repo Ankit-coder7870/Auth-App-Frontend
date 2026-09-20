@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { loginUser } from "@/services/AuthService";
-import type { LoginData } from "@/models/LoginData";
+import type  LoginData  from "@/models/LoginData";
 import { useNavigate } from "react-router";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";

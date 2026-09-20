@@ -1,6 +1,6 @@
 import type RegisterData from "@/models/RegisterData";
 import apiClient from "@/config/ApiClient";
-import type { LoginData } from "@/models/LoginData";
+import type  LoginData  from "@/models/LoginData";
 
 //register function to register user
 export const registerUser = async (data: RegisterData) => {
@@ -16,5 +16,11 @@ export const loginUser = async (loginData:LoginData) => {
     return response.data;
 }
 
+//logout function to logout user
+export const logoutUser = async () => {
+    //api call to logout user
+    const response = await apiClient.post("/auth/logout");
+    return response.data;
+}   
     
 
