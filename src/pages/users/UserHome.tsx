@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { BarChart3, User, ShieldCheck, Activity } from "lucide-react";
-//import { getCurrentUser } from "@/services/AuthService";
+import { getCurrentUser } from "@/services/AuthService";
 import useAuth from "@/store/authStore";
 import { useState } from "react";
 import type UserT from "@/models/User";
@@ -12,17 +12,17 @@ function UserHome() {
   const user = useAuth((state) => state.user);
   const [user1, setUser1] = useState<UserT | null>(null);
 
-  // const getUserData = async () => {
-  //   try {
-  //     const user1 = await getCurrentUser(user?.email);
+  const getUserData = async () => {
+    try {
+      const user1 = await getCurrentUser(user?.email);
 
-  //     setUser1(user1);
-  //     toast.success("you are able to access secured apis");
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("error in getting data");
-  //   }
-  // };
+      setUser1(user1);
+      toast.success("you are able to access secured apis");
+    } catch (error) {
+      console.log(error);
+      toast.error("error in getting data");
+    }
+  };
   return (
     <div className="min-h-screen bg-background text-foreground p-6">
       {/* Page Title */}
@@ -95,13 +95,13 @@ function UserHome() {
       </motion.div>
 
       {/* Dummy CTA */}
-      {/* <div className="text-center">
+      <div className="text-center">
         <Button onClick={getUserData} className="rounded-2xl px-8 text-lg">
           Get current user
         </Button>
 
         <p>{user1?.name}</p>
-      </div> */}
+      </div>
     </div>
   );
 }
