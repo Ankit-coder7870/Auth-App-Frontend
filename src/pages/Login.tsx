@@ -1,20 +1,17 @@
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, CheckCircle2Icon } from "lucide-react";
-
-import { FaGithub, FaGoogle } from "react-icons/fa";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { loginUser } from "@/services/AuthService";
 import type  LoginData  from "@/models/LoginData";
 import { useNavigate } from "react-router";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
 import useAuthStore from "@/store/authStore";
+import OAuth2Button from "@/components/OAuth2Button";
 
 function Login() {
   const [loginData, setLoginData] = useState<LoginData>({
@@ -311,55 +308,8 @@ function Login() {
                 <div className="h-px flex-1 bg-white/10" />
               </div>
 
-              {/* GOOGLE */}
-              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="
-                    h-10
-                    w-full
-                    rounded-full
-                    border border-white/15
-                    bg-[#1a1a1a]
-                    text-sm
-                    font-medium
-                    text-white
-                    hover:bg-[#222222]
-                    hover:text-white
-                  "
-                >
-                  <FaGoogle className="mr-2 h-4 w-4" />
-                  Continue with Google
-                </Button>
-              </motion.div>
-
-              {/* GITHUB */}
-              <motion.div
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.99 }}
-                className="mt-3"
-              >
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="
-                    h-10
-                    w-full
-                    rounded-full
-                    border border-white/15
-                    bg-[#1a1a1a]
-                    text-sm
-                    font-medium
-                    text-white
-                    hover:bg-[#222222]
-                    hover:text-white
-                  "
-                >
-                  <FaGithub className="mr-2 h-4 w-4" />
-                  Continue with GitHub
-                </Button>
-              </motion.div>
+              {/* OAUTH BUTTONS */}
+              <OAuth2Button />
             </CardContent>
           </Card>
         </motion.div>
